@@ -33,3 +33,19 @@ function createPlayer(num, token) {
     increaseWins,
   };
 }
+
+function initializeGameboard() {
+  var board = new Array(9);
+
+  function resetBoard() {
+    for (var i = 0; i < board.length; i++) {
+      board[i] = null;
+    }
+    return board;
+  }
+
+  return {
+    board,
+    resetBoard,
+  };
+}
