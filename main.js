@@ -2,9 +2,13 @@
 
 var playerOne, playerTwo, players, currentPlayer;
 
+// EVENT LISTENERS
+
 // FUNCTIONS
 
-// Initialization
+// DATA MODEL
+
+// Create and Update Player Object
 
 function createPlayer(num, token) {
   return {
@@ -32,7 +36,7 @@ function createPlayer(num, token) {
   };
 }
 
-// Track current player
+// Track and Update Current Player
 
 function trackCurrentPlayer() {
   return {
@@ -53,11 +57,8 @@ function trackCurrentPlayer() {
   };
 }
 
-playerOne = createPlayer(1, 'X');
-playerTwo = createPlayer(2, 'O');
-players = [playerOne, playerTwo];
 
-currentPlayer = trackCurrentPlayer();
+// Initialize and update gameboard and check for win/tie
 
 function initializeGameboard() {
   return {
@@ -117,3 +118,5 @@ function initializeGameboard() {
     },
   };
 }
+
+// DOM MANIPULATION
