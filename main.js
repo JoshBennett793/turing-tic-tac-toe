@@ -1,8 +1,10 @@
 // GLOBAL VARIABLES
 
-var playerOne, playerTwo, players, currentPlayer;
+var playerOne, playerTwo, players, currentPlayer, gameboard;
 
 // EVENT LISTENERS
+
+window.onload = game;
 
 // FUNCTIONS
 
@@ -38,25 +40,20 @@ function createPlayer(num, token) {
 
 // Track and Update Current Player
 
-function trackCurrentPlayer() {
+function trackCurrentPlayer(player) {
   return {
-    currentPlayer,
-
-    setCurrentPlayer: function (player) {
-      this.currentPlayer = player;
-    },
+    player,
 
     getCurrentPlayer: function () {
-      return this.currentPlayer;
+      return this.player;
     },
 
-    switchCurrentPlayer: function (players) {
-      this.currentPlayer =
-        this.currentPlayer === players[0] ? players[1] : players[0];
+    switchCurrentPlayer: function () {
+      this.player =
+        this.player === players[0] ? players[1] : players[0];
     },
   };
 }
-
 
 // Initialize and update gameboard and check for win/tie
 
@@ -106,17 +103,28 @@ function initializeGameboard() {
 
       // compare stringified version of each array to check for a match
       for (var i = 0; i < winConditions.length; i++) {
-        if (
-          JSON.stringify(winConditions[i]) === JSON.stringify(gameboardState)
-        ) {
-          return true;
-        } else {
-          continue;
-        }
+          if (
+            JSON.stringify(winConditions[i]) === JSON.stringify(gameboardState)
+          ) {
+            return true;
+          } else {
+            continue;
+          }
       }
       return false;
     },
   };
+}
+
+function game() {
+  playerOne = createPlayer(1, 'X');
+  playerTwo = createPlayer(2, 'O');
+  players = [playerOne, playerTwo];
+
+  currentPlayer = trackCurrentPlayer(playerOne);
+
+  gameboard = initializeGameboard();
+  gameboard.resetBoard();
 }
 
 // DOM MANIPULATION
