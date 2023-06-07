@@ -1,36 +1,33 @@
+// GLOBAL VARIABLES
+var playerOne, playerTwo, players, currentPlayer
+
 // FUNCTIONS
 
 // Initialization
 
 function createPlayer(num, token) {
-  var player = {
-    num,
-    token,
-    wins: 0,
-  };
-
-  function getPlayerNum() {
-    return player.num;
-  }
-
-  function getPlayerToken() {
-    return player.token;
-  }
-
-  function setPlayerToken(token) {
-    player.token = token;
-  }
-
-  function increaseWins() {
-    player.wins += 1;
-  }
-
   return {
-    player,
-    getPlayerNum,
-    getPlayerToken,
-    setPlayerToken,
-    increaseWins,
+    player: {
+      num,
+      token,
+      wins: 0,
+    },
+
+    getPlayerNum: function () {
+      return this.player.num;
+    },
+
+    getPlayerToken: function () {
+      return this.player.token;
+    },
+
+    setPlayerToken: function (token) {
+      this.player.token = token;
+    },
+
+    increaseWins: function () {
+      this.player.wins += 1;
+    },
   };
 }
 
@@ -55,7 +52,11 @@ function trackCurrentPlayer() {
   };
 }
 
-var currentPlayer = trackCurrentPlayer();
+playerOne = createPlayer(1, 'X');
+playerTwo = createPlayer(2, 'O');
+players = [playerOne, playerTwo];
+
+currentPlayer = trackCurrentPlayer();
 
 function initializeGameboard() {
   return {
@@ -74,3 +75,18 @@ function initializeGameboard() {
     },
   };
 }
+
+
+currentPlayer.setCurrentPlayer(playerOne);
+console.log(currentPlayer.getCurrentPlayer());
+
+var gameboard = initializeGameboard();
+gameboard.resetBoard();
+console.log('First gameboard: ', gameboard.board);
+gameboard.updateBoard(0);
+currentPlayer.switchCurrentPlayer(players);
+console.log(currentPlayer.getCurrentPlayer());
+gameboard.updateBoard(1);
+currentPlayer.switchCurrentPlayer(players);
+gameboard.updateBoard(2);
+console.log('Updated gameboard: ', gameboard.board);
