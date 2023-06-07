@@ -1,4 +1,5 @@
 // GLOBAL VARIABLES
+
 var playerOne, playerTwo, players, currentPlayer
 
 // FUNCTIONS
@@ -73,20 +74,9 @@ function initializeGameboard() {
         this.board[move] = currentPlayer.getCurrentPlayer().getPlayerToken();
       }
     },
+
+    checkForTie: function () {
+      return !this.board.includes(null)
+    }
   };
 }
-
-
-currentPlayer.setCurrentPlayer(playerOne);
-console.log(currentPlayer.getCurrentPlayer());
-
-var gameboard = initializeGameboard();
-gameboard.resetBoard();
-console.log('First gameboard: ', gameboard.board);
-gameboard.updateBoard(0);
-currentPlayer.switchCurrentPlayer(players);
-console.log(currentPlayer.getCurrentPlayer());
-gameboard.updateBoard(1);
-currentPlayer.switchCurrentPlayer(players);
-gameboard.updateBoard(2);
-console.log('Updated gameboard: ', gameboard.board);
