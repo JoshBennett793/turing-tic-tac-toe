@@ -34,38 +34,43 @@ function createPlayer(num, token) {
   };
 }
 
-function initializeGameboard() {
-  var board = new Array(9);
-
-  function resetBoard() {
-    for (var i = 0; i < board.length; i++) {
-      board[i] = null;
-    }
-    return board;
-  }
-
-  return resetBoard;
-}
+// Track current player
 
 function trackCurrentPlayer() {
-  var currentPlayer;
-
-  function setCurrentPlayer(player) {
-    currentPlayer = player;
-  }
-
-  function getCurrentPlayer() {
-    return currentPlayer;
-  }
-
-  function switchCurrentPlayer(player) {
-    currentPlayer = player === 1 ? 2 : 1;
-  }
-
   return {
     currentPlayer,
-    setCurrentPlayer,
-    getCurrentPlayer,
-    switchCurrentPlayer,
+
+    setCurrentPlayer: function (player) {
+      this.currentPlayer = player;
+    },
+
+    getCurrentPlayer: function () {
+      return this.currentPlayer;
+    },
+
+    switchCurrentPlayer: function (players) {
+      this.currentPlayer =
+        this.currentPlayer === players[0] ? players[1] : players[0];
+    },
+  };
+}
+
+var currentPlayer = trackCurrentPlayer();
+
+function initializeGameboard() {
+  return {
+    board: new Array(9),
+
+    resetBoard: function () {
+      for (var i = 0; i < this.board.length; i++) {
+        this.board[i] = null;
+      }
+    },
+
+    updateBoard: function (move) {
+      if (!this.board[move]) {
+        this.board[move] = currentPlayer.getCurrentPlayer().getPlayerToken();
+      }
+    },
   };
 }
