@@ -1,6 +1,6 @@
 // GLOBAL VARIABLES
 
-var playerOne, playerTwo, players, currentPlayer
+var playerOne, playerTwo, players, currentPlayer;
 
 // FUNCTIONS
 
@@ -76,7 +76,44 @@ function initializeGameboard() {
     },
 
     checkForTie: function () {
-      return !this.board.includes(null)
-    }
+      return !this.board.includes(null);
+    },
+
+    checkForWin: function () {
+      var winConditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+      ];
+
+      var gameboardState = [];
+      var currentPlayerToken = currentPlayer
+        .getCurrentPlayer()
+        .getPlayerToken();
+
+      // create gameboardState array of index positions occupied by currentPlayer's tokens
+      for (var i = 0; i < this.board.length; i++) {
+        if (this.board[i] === currentPlayerToken) {
+          gameboardState.push(i);
+        }
+      }
+
+      // compare stringified version of each array to check for a match
+      for (var i = 0; i < winConditions.length; i++) {
+        if (
+          JSON.stringify(winConditions[i]) === JSON.stringify(gameboardState)
+        ) {
+          return true;
+        } else {
+          continue;
+        }
+      }
+      return false;
+    },
   };
 }
