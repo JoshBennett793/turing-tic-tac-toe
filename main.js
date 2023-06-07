@@ -49,8 +49,7 @@ function trackCurrentPlayer(player) {
     },
 
     switchCurrentPlayer: function () {
-      this.player =
-        this.player === players[0] ? players[1] : players[0];
+      this.player = this.player === players[0] ? players[1] : players[0];
     },
   };
 }
@@ -103,13 +102,13 @@ function initializeGameboard() {
 
       // compare stringified version of each array to check for a match
       for (var i = 0; i < winConditions.length; i++) {
-          if (
-            JSON.stringify(winConditions[i]) === JSON.stringify(gameboardState)
-          ) {
-            return true;
-          } else {
-            continue;
-          }
+        if (
+          JSON.stringify(winConditions[i]) === JSON.stringify(gameboardState)
+        ) {
+          return true;
+        } else {
+          continue;
+        }
       }
       return false;
     },
