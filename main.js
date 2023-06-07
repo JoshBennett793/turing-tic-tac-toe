@@ -58,17 +58,14 @@ function trackCurrentPlayer() {
     return currentPlayer;
   }
 
+  function switchCurrentPlayer(player) {
+    currentPlayer = player === 1 ? 2 : 1;
+  }
+
   return {
     currentPlayer,
     setCurrentPlayer,
     getCurrentPlayer,
+    switchCurrentPlayer,
   };
 }
-
-var playerOne = createPlayer(1, 'X');
-var playerTwo = createPlayer(2, 'O');
-console.log('playerOne: ', playerOne.player);
-console.log('playerTwo: ', playerTwo.player);
-var currentPlayer = trackCurrentPlayer();
-currentPlayer.setCurrentPlayer(playerTwo.player.num)
-console.log(currentPlayer.getCurrentPlayer());
