@@ -44,8 +44,31 @@ function initializeGameboard() {
     return board;
   }
 
+  return resetBoard;
+}
+
+function trackCurrentPlayer() {
+  var currentPlayer;
+
+  function setCurrentPlayer(player) {
+    currentPlayer = player;
+  }
+
+  function getCurrentPlayer() {
+    return currentPlayer;
+  }
+
   return {
-    board,
-    resetBoard,
+    currentPlayer,
+    setCurrentPlayer,
+    getCurrentPlayer,
   };
 }
+
+var playerOne = createPlayer(1, 'X');
+var playerTwo = createPlayer(2, 'O');
+console.log('playerOne: ', playerOne.player);
+console.log('playerTwo: ', playerTwo.player);
+var currentPlayer = trackCurrentPlayer();
+currentPlayer.setCurrentPlayer(playerTwo.player.num)
+console.log(currentPlayer.getCurrentPlayer());
