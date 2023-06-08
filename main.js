@@ -4,18 +4,7 @@ var playerOne, playerTwo, players, currentPlayer, gameboard, winningCombo;
 
 // EVENT LISTENERS
 
-window.onload = () => {
-  init();
-  console.log(gameboard);
-  gameboard.updateBoard(1);
-  gameboard.checkForWin();
-  gameboard.updateBoard(4);
-  gameboard.checkForWin();
-  gameboard.updateBoard(3);
-  gameboard.checkForWin();
-  gameboard.updateBoard(7);
-  gameboard.checkForWin();
-};
+window.onload = init;
 
 // FUNCTIONS
 
@@ -124,6 +113,10 @@ function initializeGameboard() {
       }
       return false;
     },
+
+    checkIfValidMove: function (move) {
+      return !this.board[move]
+    }
   };
 }
 
