@@ -9,9 +9,14 @@
     <title>Tic Tac vs. Toe</title>
   </head>
   <body>
-    <section id="playerOne" class="player-score"></section>
+    <section id="playerOne" class="player-score">
+      <h3>X</h3>
+      <p class="p1-score">0 wins</p>
+    </section>
     <section class="gameboard">
-      <article class="gameboard-turn-indicator"></article>
+      <article class="gameboard-turn-indicator">
+        <h1>It's <span class="current-player">X</span>'s turn</h1>
+      </article>
       <article class="gameboard-grid">
         <div class="cell row-1 col-1" data-cell="0"></div>
         <div class="cell row-1 col-2" data-cell="1"></div>
@@ -24,6 +29,9 @@
         <div class="cell row-3 col-3" data-cell="8"></div>
       </article>
     </section>
-    <section id="playerTwo" class="player-score two"></section>
+    <section id="playerTwo" class="player-score">
+      <h3>O</h3>
+      <p class="p2-score">0 wins</p>
+    </section>
   </body>
 </html>
