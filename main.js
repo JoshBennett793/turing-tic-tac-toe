@@ -1,10 +1,21 @@
 // GLOBAL VARIABLES
 
-var playerOne, playerTwo, players, currentPlayer, gameboard;
+var playerOne, playerTwo, players, currentPlayer, gameboard, winningCombo;
 
 // EVENT LISTENERS
 
-window.onload = game;
+window.onload = () => {
+  init();
+  console.log(gameboard);
+  gameboard.updateBoard(1);
+  gameboard.checkForWin();
+  gameboard.updateBoard(4);
+  gameboard.checkForWin();
+  gameboard.updateBoard(3);
+  gameboard.checkForWin();
+  gameboard.updateBoard(7);
+  gameboard.checkForWin();
+};
 
 // FUNCTIONS
 
@@ -100,11 +111,12 @@ function initializeGameboard() {
         }
       }
 
-      // compare stringified version of each array to check for a match
+      // evaluate each winCondition against the current gameboard state, return boolean
+      // if winning condition is found and assign winningCombo to winning condition
       for (var i = 0; i < winConditions.length; i++) {
-        if (
-          JSON.stringify(winConditions[i]) === JSON.stringify(gameboardState)
-        ) {
+        var isWin = evaluateWinCondition(gameboardState, winConditions[i]);
+        if (isWin) {
+          winningCombo = winConditions[i];
           return true;
         } else {
           continue;
@@ -115,7 +127,17 @@ function initializeGameboard() {
   };
 }
 
-function game() {
+function evaluateWinCondition(state, condition) {
+  var winningCombo = [];
+  for (var i = 0; i < state.length; i++) {
+    if (condition.includes(state[i])) {
+      winningCombo.push(state[i]);
+    }
+  }
+  return winningCombo.length === 3;
+}
+
+function init() {
   playerOne = createPlayer(1, 'X');
   playerTwo = createPlayer(2, 'O');
   players = [playerOne, playerTwo];
