@@ -1,3 +1,7 @@
+// QUERY SELECTORS
+
+var gameboardCells = document.querySelectorAll('.cell');
+
 // GLOBAL VARIABLES
 
 var playerOne, playerTwo, players, currentPlayer, gameboard, winningCombo;
@@ -5,6 +9,19 @@ var playerOne, playerTwo, players, currentPlayer, gameboard, winningCombo;
 // EVENT LISTENERS
 
 window.onload = init;
+
+for (var i = 0; i < gameboardCells.length; i++) {
+  gameboardCells[i].onclick = (e) => {
+    var cellNum = e.target.dataset.cell;
+    var isValidMove = gameboard.checkIfValidMove(cellNum);
+
+    if (isValidMove) {
+      gameboard.updateBoard(cellNum);
+      renderToken(cellNum);
+      currentPlayer.switchCurrentPlayer();
+    }
+  };
+}
 
 // FUNCTIONS
 
@@ -115,8 +132,8 @@ function initializeGameboard() {
     },
 
     checkIfValidMove: function (move) {
-      return !this.board[move]
-    }
+      return !this.board[move];
+    },
   };
 }
 
@@ -142,3 +159,9 @@ function init() {
 }
 
 // DOM MANIPULATION
+
+function renderToken(cellNum) {
+  for (var i = 0; i < gameboard.board.length; i++) {
+    gameboardCells[cellNum].innerText = currentPlayer.player.getPlayerToken();
+  }
+}
