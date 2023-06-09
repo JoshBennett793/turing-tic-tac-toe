@@ -11,10 +11,19 @@ var playerOne, playerTwo, players, currentPlayer, gameboard, winningCombo;
 window.onload = init;
 
 for (var i = 0; i < gameboardCells.length; i++) {
+
+  gameboardCells[i].onmouseover = (e) => {
+    e.target.classList.toggle('mouseover');
+  }
+  
+  gameboardCells[i].onmouseout = (e) => {
+    e.target.classList.toggle('mouseover');
+  }
+  
   gameboardCells[i].onclick = (e) => {
     var cellNum = e.target.dataset.cell;
     var isValidMove = gameboard.checkIfValidMove(cellNum);
-
+    
     if (isValidMove) {
       gameboard.updateBoard(cellNum);
       renderToken(cellNum);
