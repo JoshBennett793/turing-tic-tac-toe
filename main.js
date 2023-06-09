@@ -8,28 +8,40 @@ var playerOne, playerTwo, players, currentPlayer, gameboard, winningCombo;
 
 // EVENT LISTENERS
 
-window.onload = init;
+window.onload = () => {
+  init();
 
-for (var i = 0; i < gameboardCells.length; i++) {
+  for (var i = 0; i < gameboardCells.length; i++) {
+    gameboardCells[i].onmouseover = (e) => {
+      var isValidMove = handleValidityCheck(e);
+      if (isValidMove) {
+        e.target.classList.toggle('mouseover');
+      }
+    };
 
-  gameboardCells[i].onmouseover = (e) => {
-    e.target.classList.toggle('mouseover');
+    gameboardCells[i].onmouseout = (e) => {
+      var isValidMove = handleValidityCheck(e);
+      if (isValidMove) {
+        e.target.classList.toggle('mouseover');
+      }
+    };
+
+    gameboardCells[i].onclick = (e) => {
+      var cellNum = e.target.dataset.cell;
+      var isValidMove = handleValidityCheck(e);
+      if (isValidMove) {
+        gameboard.updateBoard(cellNum);
+        renderToken(cellNum);
+        e.target.classList.remove('mouseover');
+        currentPlayer.switchCurrentPlayer();
+      }
+    };
   }
-  
-  gameboardCells[i].onmouseout = (e) => {
-    e.target.classList.toggle('mouseover');
-  }
-  
-  gameboardCells[i].onclick = (e) => {
-    var cellNum = e.target.dataset.cell;
-    var isValidMove = gameboard.checkIfValidMove(cellNum);
-    
-    if (isValidMove) {
-      gameboard.updateBoard(cellNum);
-      renderToken(cellNum);
-      currentPlayer.switchCurrentPlayer();
-    }
-  };
+};
+
+function handleValidityCheck(e) {
+  var cellNum = e.target.dataset.cell;
+  return gameboard.checkIfValidMove(cellNum);
 }
 
 // FUNCTIONS
