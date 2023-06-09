@@ -33,6 +33,13 @@ window.onload = () => {
         gameboard.updateBoard(cellNum);
         renderToken(cellNum);
         e.target.classList.remove('mouseover');
+      }
+      if (gameboard.checkForWin()) {
+        console.log(currentPlayer.player.getPlayerToken(), 'wins');
+      } else if (gameboard.checkForTie()) {
+        console.log('tie game');
+      } else {
+        console.log('keep playing');
         currentPlayer.switchCurrentPlayer();
       }
     };
