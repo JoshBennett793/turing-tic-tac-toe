@@ -5,7 +5,13 @@ var gameboardHeader = document.querySelector('.gameboard-header h1');
 
 // GLOBAL VARIABLES
 
-var playerOne, playerTwo, players, currentPlayer, gameboard, winningCombo;
+var playerOne,
+  playerTwo,
+  players,
+  currentPlayer,
+  gameboard,
+  winningCombo,
+  gameOver = false;
 
 // EVENT LISTENERS
 
@@ -30,15 +36,15 @@ window.onload = () => {
     gameboardCells[i].onclick = (e) => {
       var cellNum = e.target.dataset.cell;
       var isValidMove = handleValidityCheck(e);
+
       if (isValidMove) {
-        handleMove(e, cellNum)
+        handleMove(e, cellNum);
       }
-      if (gameboard.checkForWin()) {
+      if (gameboard.checkForWin() && isValidMove) {
         handleWin();
       } else if (gameboard.checkForTie()) {
         handleTieGame();
       } else {
-        console.log('keep playing');
         currentPlayer.switchCurrentPlayer();
       }
     };
@@ -169,7 +175,7 @@ function evaluateWinCondition(state, condition) {
 
 function handleValidityCheck(e) {
   var cellNum = e.target.dataset.cell;
-  return gameboard.checkIfValidMove(cellNum);
+  return gameboard.checkIfValidMove(cellNum) && !gameOver;
 }
 
 function init() {
@@ -196,7 +202,6 @@ function displayWinner(winner) {
 }
 
 function updateWins(playerNum, playerWins) {
-  console.log(playerNum, playerWins);
   var playerScore = document.querySelector(`.p${playerNum}-score`);
   playerScore.innerText = `${playerWins} wins`;
 }
@@ -205,6 +210,7 @@ function handleWin() {
   var currentPlayerToken = currentPlayer.player.getPlayerToken();
   var currentPlayerNum = currentPlayer.player.getPlayerNum();
 
+  gameOver = true;
   displayWinner(currentPlayerToken);
   currentPlayer.player.increaseWins();
   updateWins(currentPlayerNum, currentPlayer.player.getPlayerWins());
@@ -216,6 +222,7 @@ function displayTieGame() {
 }
 
 function handleTieGame() {
+  gameOver = true;
   displayTieGame();
   currentPlayer.switchCurrentPlayer();
 }
