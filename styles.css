@@ -48,6 +48,12 @@ body > section {
   grid-template-rows: repeat(3, 150px);
 }
 
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .gameboard-grid .row-1,
 .gameboard-grid .row-2 {
   border-bottom: 2px solid grey;
