@@ -57,3 +57,12 @@ body > section {
 .gameboard-grid .col-2 {
   border-right: 2px solid grey;
 }
+
+.cell {
+}
+
+.mouseover {
+  background-color: rgb(182, 255, 255);
+  box-shadow: 0 0 20px rgb(66, 202, 202);
+  cursor: pointer;
+}
