@@ -212,6 +212,7 @@ function handleWin() {
 
   gameOver = true;
   displayWinner(currentPlayerToken);
+  displayWinningCombo();
   currentPlayer.player.increaseWins();
   updateWins(currentPlayerNum, currentPlayer.player.getPlayerWins());
   currentPlayer.switchCurrentPlayer();
@@ -231,4 +232,12 @@ function handleMove(e, cellNum) {
   gameboard.updateBoard(cellNum);
   renderToken(cellNum);
   e.target.classList.remove('mouseover');
+}
+
+function displayWinningCombo() {
+  for (var i = 0; i < gameboardCells.length; i++) {
+    if (winningCombo.includes(parseInt(gameboardCells[i].dataset.cell))) {
+      gameboardCells[i].classList.add('winner');
+    }
+  }
 }
