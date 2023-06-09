@@ -1,6 +1,7 @@
 // QUERY SELECTORS
 
 var gameboardCells = document.querySelectorAll('.cell');
+var gameboardHeader = document.querySelector('.gameboard-header h1');
 
 // GLOBAL VARIABLES
 
@@ -35,7 +36,7 @@ window.onload = () => {
         e.target.classList.remove('mouseover');
       }
       if (gameboard.checkForWin()) {
-        console.log(currentPlayer.player.getPlayerToken(), 'wins');
+        displayWinner(currentPlayer.player.getPlayerToken());
       } else if (gameboard.checkForTie()) {
         console.log('tie game');
       } else {
@@ -45,11 +46,6 @@ window.onload = () => {
     };
   }
 };
-
-function handleValidityCheck(e) {
-  var cellNum = e.target.dataset.cell;
-  return gameboard.checkIfValidMove(cellNum);
-}
 
 // FUNCTIONS
 
@@ -175,6 +171,11 @@ function evaluateWinCondition(state, condition) {
   return winningCombo.length === 3;
 }
 
+function handleValidityCheck(e) {
+  var cellNum = e.target.dataset.cell;
+  return gameboard.checkIfValidMove(cellNum);
+}
+
 function init() {
   playerOne = createPlayer(1, 'X');
   playerTwo = createPlayer(2, 'O');
@@ -192,4 +193,8 @@ function renderToken(cellNum) {
   for (var i = 0; i < gameboard.board.length; i++) {
     gameboardCells[cellNum].innerText = currentPlayer.player.getPlayerToken();
   }
+}
+
+function displayWinner(winner) {
+  gameboardHeader.innerText = `${winner} wins!`;
 }
