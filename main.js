@@ -204,7 +204,11 @@ function displayWinner(winner) {
 
 function updateWins(playerNum, playerWins) {
   var playerScore = document.querySelector(`.p${playerNum}-score`);
-  playerScore.innerText = `${playerWins} wins`;
+  if (playerWins === 1) {
+    playerScore.innerText = `${playerWins} win`;
+  } else {
+    playerScore.innerText = `${playerWins} wins`;
+  }
 }
 
 function handleWin() {
