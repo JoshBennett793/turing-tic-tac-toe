@@ -38,7 +38,7 @@ window.onload = () => {
       if (gameboard.checkForWin()) {
         handleWin();
       } else if (gameboard.checkForTie()) {
-        currentPlayer.switchCurrentPlayer();
+        handleTieGame();
       } else {
         console.log('keep playing');
         currentPlayer.switchCurrentPlayer();
@@ -210,5 +210,14 @@ function handleWin() {
   displayWinner(currentPlayerToken);
   currentPlayer.player.increaseWins();
   updateWins(currentPlayerNum, currentPlayer.player.getPlayerWins());
+  currentPlayer.switchCurrentPlayer();
+}
+
+function displayTieGame() {
+  gameboardHeader.innerText = 'Tie Game!'
+}
+
+function handleTieGame() {
+  displayTieGame();
   currentPlayer.switchCurrentPlayer();
 }
