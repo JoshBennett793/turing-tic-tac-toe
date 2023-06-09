@@ -31,9 +31,7 @@ window.onload = () => {
       var cellNum = e.target.dataset.cell;
       var isValidMove = handleValidityCheck(e);
       if (isValidMove) {
-        gameboard.updateBoard(cellNum);
-        renderToken(cellNum);
-        e.target.classList.remove('mouseover');
+        handleMove(e, cellNum)
       }
       if (gameboard.checkForWin()) {
         handleWin();
@@ -47,7 +45,7 @@ window.onload = () => {
   }
 };
 
-// FUNCTIONS
+// FUNCTIONS & HANDLERS
 
 // DATA MODEL
 
@@ -214,10 +212,16 @@ function handleWin() {
 }
 
 function displayTieGame() {
-  gameboardHeader.innerText = 'Tie Game!'
+  gameboardHeader.innerText = 'Tie Game!';
 }
 
 function handleTieGame() {
   displayTieGame();
   currentPlayer.switchCurrentPlayer();
+}
+
+function handleMove(e, cellNum) {
+  gameboard.updateBoard(cellNum);
+  renderToken(cellNum);
+  e.target.classList.remove('mouseover');
 }
