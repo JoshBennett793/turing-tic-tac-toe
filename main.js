@@ -2,7 +2,6 @@
 
 var gameboardCells = document.querySelectorAll('.cell');
 var gameboardHeader = document.querySelector('.gameboard-header h1');
-var gameboardHeaderSpan = document.querySelector('.gameboard-header h1 span');
 
 // GLOBAL VARIABLES
 
@@ -23,14 +22,14 @@ window.onload = () => {
     gameboardCells[i].onmouseover = (e) => {
       var isValidMove = handleValidityCheck(e);
       if (isValidMove) {
-        e.target.classList.toggle('mouseover');
+        e.target.classList.add('mouseover');
       }
     };
 
     gameboardCells[i].onmouseout = (e) => {
       var isValidMove = handleValidityCheck(e);
       if (isValidMove) {
-        e.target.classList.toggle('mouseover');
+        e.target.classList.remove('mouseover');
       }
     };
 
@@ -218,6 +217,7 @@ function handleWin() {
   currentPlayer.player.increaseWins();
   updateWins(currentPlayerNum, currentPlayer.player.getPlayerWins());
   currentPlayer.switchCurrentPlayer();
+  handleGameReset();
 }
 
 function displayTieGame() {
@@ -228,6 +228,7 @@ function handleTieGame() {
   gameOver = true;
   displayTieGame();
   currentPlayer.switchCurrentPlayer();
+  handleGameReset();
 }
 
 function handleMove(e, cellNum) {
@@ -245,5 +246,22 @@ function displayWinningCombo() {
 }
 
 function displayNextTurn() {
-  gameboardHeaderSpan.innerText = `${currentPlayer.player.getPlayerToken()}`;
+  gameboardHeader.innerText = `It's ${currentPlayer.player.getPlayerToken()}'s turn!`;
+}
+
+function resetDOM() {
+  displayNextTurn();
+
+  for (var i = 0; i < gameboardCells.length; i++) {
+    gameboardCells[i].innerText = '';
+    gameboardCells[i].classList.remove('winner');
+  }
+}
+
+function handleGameReset() {
+  setTimeout(() => {
+    gameOver = false;
+    gameboard.resetBoard();
+    resetDOM();
+  }, 3000)
 }
