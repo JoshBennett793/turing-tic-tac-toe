@@ -36,9 +36,9 @@ window.onload = () => {
         e.target.classList.remove('mouseover');
       }
       if (gameboard.checkForWin()) {
-        displayWinner(currentPlayer.player.getPlayerToken());
+        handleWin();
       } else if (gameboard.checkForTie()) {
-        console.log('tie game');
+        currentPlayer.switchCurrentPlayer();
       } else {
         console.log('keep playing');
         currentPlayer.switchCurrentPlayer();
@@ -73,6 +73,10 @@ function createPlayer(num, token) {
       this.player.token = token;
     },
 
+    getPlayerWins: function () {
+      return this.player.wins;
+    },
+
     increaseWins: function () {
       this.player.wins += 1;
     },
@@ -84,10 +88,6 @@ function createPlayer(num, token) {
 function trackCurrentPlayer(player) {
   return {
     player,
-
-    getCurrentPlayer: function () {
-      return this.player;
-    },
 
     switchCurrentPlayer: function () {
       this.player = this.player === players[0] ? players[1] : players[0];
@@ -109,7 +109,7 @@ function initializeGameboard() {
 
     updateBoard: function (move) {
       if (!this.board[move]) {
-        this.board[move] = currentPlayer.getCurrentPlayer().getPlayerToken();
+        this.board[move] = currentPlayer.player.getPlayerToken();
       }
     },
 
@@ -130,9 +130,7 @@ function initializeGameboard() {
       ];
 
       var gameboardState = [];
-      var currentPlayerToken = currentPlayer
-        .getCurrentPlayer()
-        .getPlayerToken();
+      var currentPlayerToken = currentPlayer.player.getPlayerToken();
 
       // create gameboardState array of index positions occupied by currentPlayer's tokens
       for (var i = 0; i < this.board.length; i++) {
@@ -197,4 +195,20 @@ function renderToken(cellNum) {
 
 function displayWinner(winner) {
   gameboardHeader.innerText = `${winner} wins!`;
+}
+
+function updateWins(playerNum, playerWins) {
+  console.log(playerNum, playerWins);
+  var playerScore = document.querySelector(`.p${playerNum}-score`);
+  playerScore.innerText = `${playerWins} wins`;
+}
+
+function handleWin() {
+  var currentPlayerToken = currentPlayer.player.getPlayerToken();
+  var currentPlayerNum = currentPlayer.player.getPlayerNum();
+
+  displayWinner(currentPlayerToken);
+  currentPlayer.player.increaseWins();
+  updateWins(currentPlayerNum, currentPlayer.player.getPlayerWins());
+  currentPlayer.switchCurrentPlayer();
 }
