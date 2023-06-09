@@ -2,6 +2,7 @@
 
 var gameboardCells = document.querySelectorAll('.cell');
 var gameboardHeader = document.querySelector('.gameboard-header h1');
+var gameboardHeaderSpan = document.querySelector('.gameboard-header h1 span');
 
 // GLOBAL VARIABLES
 
@@ -46,6 +47,7 @@ window.onload = () => {
         handleTieGame();
       } else {
         currentPlayer.switchCurrentPlayer();
+        displayNextTurn();
       }
     };
   }
@@ -240,4 +242,8 @@ function displayWinningCombo() {
       gameboardCells[i].classList.add('winner');
     }
   }
+}
+
+function displayNextTurn() {
+  gameboardHeaderSpan.innerText = `${currentPlayer.player.getPlayerToken()}`;
 }
