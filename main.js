@@ -42,7 +42,7 @@ window.onload = () => {
       }
       if (gameboard.checkForWin() && isValidMove) {
         handleWin();
-      } else if (gameboard.checkForTie() && isValidMove) {
+      } else if (gameboard.checkForTie()) {
         handleTieGame();
       } else {
         currentPlayer.switchCurrentPlayer();
