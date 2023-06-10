@@ -5,13 +5,16 @@ var gameboardHeader = document.querySelector('.gameboard-header h1');
 
 // GLOBAL VARIABLES
 
-var playerOne,
-  playerTwo,
-  players,
-  currentPlayer,
-  gameboard,
-  winningCombo,
-  gameOver = false;
+var store = {
+  playerOne: Object,
+  playerTwo: Object,
+  players: [],
+  startingPlayer: Object,
+  currentPlayer: Object,
+  gameboard: [],
+  winningCombo: [],
+  gameOver: false,
+};
 
 // EVENT LISTENERS
 
@@ -40,12 +43,12 @@ window.onload = () => {
       if (isValidMove) {
         handleMove(e, cellNum);
       }
-      if (gameboard.checkForWin() && isValidMove) {
+      if (store.gameboard.checkForWin() && isValidMove) {
         handleWin();
-      } else if (gameboard.checkForTie()) {
+      } else if (store.gameboard.checkForTie()) {
         handleTieGame();
       } else {
-        currentPlayer.switchCurrentPlayer();
+        store.currentPlayer.switchCurrentPlayer();
         displayNextTurn();
       }
     };
@@ -95,7 +98,8 @@ function trackCurrentPlayer(player) {
     player,
 
     switchCurrentPlayer: function () {
-      this.player = this.player === players[0] ? players[1] : players[0];
+      this.player =
+        this.player === store.players[0] ? store.players[1] : store.players[0];
     },
   };
 }
@@ -114,7 +118,7 @@ function initializeGameboard() {
 
     updateBoard: function (move) {
       if (!this.board[move]) {
-        this.board[move] = currentPlayer.player.getPlayerToken();
+        this.board[move] = store.currentPlayer.player.getPlayerToken();
       }
     },
 
@@ -135,7 +139,7 @@ function initializeGameboard() {
       ];
 
       var gameboardState = [];
-      var currentPlayerToken = currentPlayer.player.getPlayerToken();
+      var currentPlayerToken = store.currentPlayer.player.getPlayerToken();
 
       // create gameboardState array of index positions occupied by currentPlayer's tokens
       for (var i = 0; i < this.board.length; i++) {
@@ -176,25 +180,27 @@ function evaluateWinCondition(state, condition) {
 
 function handleValidityCheck(e) {
   var cellNum = e.target.dataset.cell;
-  return gameboard.checkIfValidMove(cellNum) && !gameOver;
+  return store.gameboard.checkIfValidMove(cellNum) && !store.gameOver;
 }
 
 function init() {
-  playerOne = createPlayer(1, 'X');
-  playerTwo = createPlayer(2, 'O');
-  players = [playerOne, playerTwo];
+  store.playerOne = createPlayer(1, 'X');
+  store.playerTwo = createPlayer(2, 'O');
+  store.players = [store.playerOne, store.playerTwo];
 
-  currentPlayer = trackCurrentPlayer(playerOne);
+  store.currentPlayer = trackCurrentPlayer(store.playerOne);
+  store.startingPlayer = store.playerOne;
 
-  gameboard = initializeGameboard();
-  gameboard.resetBoard();
+  store.gameboard = initializeGameboard();
+  store.gameboard.resetBoard();
 }
 
 // DOM MANIPULATION
 
 function renderToken(cellNum) {
-  for (var i = 0; i < gameboard.board.length; i++) {
-    gameboardCells[cellNum].innerText = currentPlayer.player.getPlayerToken();
+  for (var i = 0; i < store.gameboard.board.length; i++) {
+    gameboardCells[cellNum].innerText =
+      store.currentPlayer.player.getPlayerToken();
   }
 }
 
@@ -212,15 +218,15 @@ function updateWins(playerNum, playerWins) {
 }
 
 function handleWin() {
-  var currentPlayerToken = currentPlayer.player.getPlayerToken();
-  var currentPlayerNum = currentPlayer.player.getPlayerNum();
+  var currentPlayerToken = store.currentPlayer.player.getPlayerToken();
+  var currentPlayerNum = store.currentPlayer.player.getPlayerNum();
 
-  gameOver = true;
+  store.gameOver = true;
   displayWinner(currentPlayerToken);
   displayWinningCombo();
-  currentPlayer.player.increaseWins();
-  updateWins(currentPlayerNum, currentPlayer.player.getPlayerWins());
-  currentPlayer.switchCurrentPlayer();
+  store.currentPlayer.player.increaseWins();
+  updateWins(currentPlayerNum, store.currentPlayer.player.getPlayerWins());
+  store.currentPlayer.switchCurrentPlayer();
   handleGameReset();
 }
 
@@ -229,14 +235,14 @@ function displayTieGame() {
 }
 
 function handleTieGame() {
-  gameOver = true;
+  store.gameOver = true;
   displayTieGame();
-  currentPlayer.switchCurrentPlayer();
+  store.currentPlayer.switchCurrentPlayer();
   handleGameReset();
 }
 
 function handleMove(e, cellNum) {
-  gameboard.updateBoard(cellNum);
+  store.gameboard.updateBoard(cellNum);
   renderToken(cellNum);
   e.target.classList.remove('mouseover');
 }
@@ -250,7 +256,7 @@ function displayWinningCombo() {
 }
 
 function displayNextTurn() {
-  gameboardHeader.innerText = `It's ${currentPlayer.player.getPlayerToken()}'s turn!`;
+  gameboardHeader.innerText = `It's ${store.currentPlayer.player.getPlayerToken()}'s turn!`;
 }
 
 function resetDOM() {
@@ -264,8 +270,13 @@ function resetDOM() {
 
 function handleGameReset() {
   setTimeout(() => {
-    gameOver = false;
-    gameboard.resetBoard();
+    store.gameOver = false;
+    store.gameboard.resetBoard();
+    store.currentPlayer.player =
+      store.startingPlayer === store.players[0]
+        ? store.players[1]
+        : store.players[0];
+    store.startingPlayer = store.currentPlayer.player;
     resetDOM();
-  }, 3000)
+  }, 3000);
 }
