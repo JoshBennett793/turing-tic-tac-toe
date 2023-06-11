@@ -43,11 +43,12 @@ window.onload = () => {
       if (isValidMove) {
         handleMove(e, cellNum);
       }
-      if (store.gameboard.checkForWin() && isValidMove) {
+      
+      if (store.gameboard.checkForWin() && !store.gameOver) {
         handleWin();
       } else if (store.gameboard.checkForTie()) {
         handleTieGame();
-      } else {
+      } else if (isValidMove) {
         store.currentPlayer.switchCurrentPlayer();
         displayNextTurn();
       }
@@ -226,7 +227,6 @@ function handleWin() {
   displayWinningCombo();
   store.currentPlayer.player.increaseWins();
   updateWins(currentPlayerNum, store.currentPlayer.player.getPlayerWins());
-  store.currentPlayer.switchCurrentPlayer();
   handleGameReset();
 }
 
@@ -237,7 +237,6 @@ function displayTieGame() {
 function handleTieGame() {
   store.gameOver = true;
   displayTieGame();
-  store.currentPlayer.switchCurrentPlayer();
   handleGameReset();
 }
 
