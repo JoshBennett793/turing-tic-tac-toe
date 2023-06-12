@@ -14,44 +14,44 @@ var store = {
   gameboard: [],
   winningCombo: [],
   gameOver: false,
+  isPlayingComputer: true,
+  playerChoice: 'O',
 };
 
 // EVENT LISTENERS
 
-window.onload = () => {
-  init();
+window.onload = init;
 
-  for (var i = 0; i < gameboardCells.length; i++) {
-    gameboardCells[i].onmouseover = (e) => {
-      var isValidMove = handleValidityCheck(e);
-      if (isValidMove) {
-        e.target.classList.add('mouseover');
-      }
-    };
+for (var i = 0; i < gameboardCells.length; i++) {
+  gameboardCells[i].onmouseover = (e) => {
+    var isValidMove = handleValidityCheck(e);
+    if (isValidMove) {
+      e.target.classList.add('mouseover');
+    }
+  };
 
-    gameboardCells[i].onmouseout = (e) => {
-      e.target.classList.remove('mouseover');
-    };
+  gameboardCells[i].onmouseout = (e) => {
+    e.target.classList.remove('mouseover');
+  };
 
-    gameboardCells[i].onclick = (e) => {
-      var cellNum = e.target.dataset.cell;
-      var isValidMove = handleValidityCheck(e);
+  gameboardCells[i].onclick = (e) => {
+    var cellNum = e.target.dataset.cell;
+    var isValidMove = handleValidityCheck(e);
 
-      if (isValidMove) {
-        handleMove(e, cellNum);
-      }
+    if (isValidMove) {
+      handleMove(e, cellNum);
+    }
 
-      if (store.gameboard.checkForWin() && !store.gameOver) {
-        handleWin();
-      } else if (store.gameboard.checkForTie()) {
-        handleTieGame();
-      } else if (isValidMove) {
-        store.currentPlayer.switchCurrentPlayer();
-        displayNextTurn();
-      }
-    };
-  }
-};
+    if (store.gameboard.checkForWin() && !store.gameOver) {
+      handleWin();
+    } else if (store.gameboard.checkForTie()) {
+      handleTieGame();
+    } else if (isValidMove) {
+      store.currentPlayer.switchCurrentPlayer();
+      displayNextTurn();
+    }
+  };
+}
 
 // FUNCTIONS & HANDLERS
 
@@ -59,12 +59,13 @@ window.onload = () => {
 
 // Create and Update Player Object
 
-function createPlayer(num, token) {
+function createPlayer(num, token, isComputer) {
   return {
     player: {
       num,
       token,
       wins: 0,
+      isComputer: isComputer ?? false,
     },
 
     getPlayerNum: function () {
@@ -103,7 +104,7 @@ function trackCurrentPlayer(player) {
 function initializeGameboard() {
   return {
     board: new Array(9),
-    
+
     resetBoard: function () {
       for (var i = 0; i < this.board.length; i++) {
         this.board[i] = null;
@@ -159,7 +160,6 @@ function initializeGameboard() {
       }
       return false;
     },
-
   };
 }
 
@@ -182,8 +182,16 @@ function handleValidityCheck(e) {
 }
 
 function init() {
-  store.playerOne = createPlayer(1, 'X');
-  store.playerTwo = createPlayer(2, 'O');
+  if (store.isPlayingComputer && store.playerChoice === 'X') {
+    store.playerOne = createPlayer(1, 'X');
+    store.playerTwo = createPlayer(2, 'O', true);
+  } else if (store.isPlayingComputer && store.playerChoice === 'O') {
+    store.playerOne = createPlayer(1, 'X', true);
+    store.playerTwo = createPlayer(2, 'O');
+  } else {
+    store.playerOne = createPlayer(1, 'X');
+    store.playerTwo = createPlayer(2, 'O');
+  }
   store.players = [store.playerOne, store.playerTwo];
 
   store.currentPlayer = trackCurrentPlayer(store.playerOne);
@@ -208,7 +216,7 @@ function displayWinner(winner) {
 
 function updateWins(playerNum, playerWins) {
   var playerScore = document.querySelector(`.p${playerNum}-score`);
-  
+
   if (playerWins === 1) {
     playerScore.innerText = `${playerWins} win`;
   } else {
@@ -272,7 +280,7 @@ function handleGameReset() {
         ? store.players[1]
         : store.players[0];
     store.startingPlayer = store.currentPlayer.player;
-    displayNextTurn()
+    displayNextTurn();
     resetDOM();
   }, 3000);
 }
