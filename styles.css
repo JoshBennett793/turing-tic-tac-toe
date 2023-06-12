@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 
-  font-size: 50px;
+  font-size: 60px;
+  font-family: 'Nunito', sans-serif;
 }
 
 body {
@@ -38,20 +41,22 @@ body > section {
 }
 
 .gameboard-grid {
-  height: 70vh;
+  height: 50vh;
+  width: 50vh;
 
   align-self: center;
   align-content: center;
 
   display: grid;
-  grid-template-columns: repeat(3, 150px);
-  grid-template-rows: repeat(3, 150px);
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
 }
 
 .cell {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 100px;
 }
 
 .gameboard-grid .row-1,
