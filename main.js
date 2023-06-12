@@ -30,10 +30,7 @@ window.onload = () => {
     };
 
     gameboardCells[i].onmouseout = (e) => {
-      var isValidMove = handleValidityCheck(e);
-      if (isValidMove) {
-        e.target.classList.remove('mouseover');
-      }
+      e.target.classList.remove('mouseover');
     };
 
     gameboardCells[i].onclick = (e) => {
@@ -43,7 +40,7 @@ window.onload = () => {
       if (isValidMove) {
         handleMove(e, cellNum);
       }
-      
+
       if (store.gameboard.checkForWin() && !store.gameOver) {
         handleWin();
       } else if (store.gameboard.checkForTie()) {
@@ -78,10 +75,6 @@ function createPlayer(num, token) {
       return this.player.token;
     },
 
-    setPlayerToken: function (token) {
-      this.player.token = token;
-    },
-
     getPlayerWins: function () {
       return this.player.wins;
     },
@@ -110,11 +103,15 @@ function trackCurrentPlayer(player) {
 function initializeGameboard() {
   return {
     board: new Array(9),
-
+    
     resetBoard: function () {
       for (var i = 0; i < this.board.length; i++) {
         this.board[i] = null;
       }
+    },
+
+    checkIfValidMove: function (move) {
+      return !this.board[move];
     },
 
     updateBoard: function (move) {
@@ -150,7 +147,7 @@ function initializeGameboard() {
       }
 
       // evaluate each winCondition against the current gameboard state, return boolean
-      // if winning condition is found and assign winningCombo to winning condition
+      // if winning condition is found and assign winning condition to winningCombo
       for (var i = 0; i < winConditions.length; i++) {
         var isWin = evaluateWinCondition(gameboardState, winConditions[i]);
         if (isWin) {
@@ -163,9 +160,6 @@ function initializeGameboard() {
       return false;
     },
 
-    checkIfValidMove: function (move) {
-      return !this.board[move];
-    },
   };
 }
 
@@ -176,11 +170,14 @@ function evaluateWinCondition(state, condition) {
       winningCombo.push(state[i]);
     }
   }
+  // return true if all 3 win condition elements were found in player's gameboardState
   return winningCombo.length === 3;
 }
 
 function handleValidityCheck(e) {
   var cellNum = e.target.dataset.cell;
+  // returns true if data model gameboard cell that matches UI gameboard
+  // cell is null and gameOver is set to false
   return store.gameboard.checkIfValidMove(cellNum) && !store.gameOver;
 }
 
@@ -211,6 +208,7 @@ function displayWinner(winner) {
 
 function updateWins(playerNum, playerWins) {
   var playerScore = document.querySelector(`.p${playerNum}-score`);
+  
   if (playerWins === 1) {
     playerScore.innerText = `${playerWins} win`;
   } else {
@@ -259,8 +257,6 @@ function displayNextTurn() {
 }
 
 function resetDOM() {
-  displayNextTurn();
-
   for (var i = 0; i < gameboardCells.length; i++) {
     gameboardCells[i].innerText = '';
     gameboardCells[i].classList.remove('winner');
@@ -276,6 +272,7 @@ function handleGameReset() {
         ? store.players[1]
         : store.players[0];
     store.startingPlayer = store.currentPlayer.player;
+    displayNextTurn()
     resetDOM();
   }, 3000);
 }
