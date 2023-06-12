@@ -21,17 +21,6 @@ var store = {
 
 window.onload = init;
 
-//   for (var i = 0; i < gameboardCells.length; i++) {
-//     gameboardCells[i].onmouseover = (e) => {
-//       // var isValidMove = handleValidityCheck(e);
-//       // if (isValidMove) {
-//       //   e.target.classList.add('mouseover');
-//       // }
-//     };
-
-//   }
-// };
-
 gameboardContainer.onmouseover = (e) => {
   var isValidMove = handleValidityCheck(e);
   if (isValidMove) {
