@@ -1,5 +1,6 @@
 // QUERY SELECTORS
 
+var gameboardContainer = document.querySelector('.gameboard-grid');
 var gameboardCells = document.querySelectorAll('.cell');
 var gameboardHeader = document.querySelector('.gameboard-header h1');
 
@@ -18,38 +19,45 @@ var store = {
 
 // EVENT LISTENERS
 
-window.onload = () => {
-  init();
+window.onload = init;
 
-  for (var i = 0; i < gameboardCells.length; i++) {
-    gameboardCells[i].onmouseover = (e) => {
-      var isValidMove = handleValidityCheck(e);
-      if (isValidMove) {
-        e.target.classList.add('mouseover');
-      }
-    };
+//   for (var i = 0; i < gameboardCells.length; i++) {
+//     gameboardCells[i].onmouseover = (e) => {
+//       // var isValidMove = handleValidityCheck(e);
+//       // if (isValidMove) {
+//       //   e.target.classList.add('mouseover');
+//       // }
+//     };
 
-    gameboardCells[i].onmouseout = (e) => {
-      e.target.classList.remove('mouseover');
-    };
+//   }
+// };
 
-    gameboardCells[i].onclick = (e) => {
-      var cellNum = e.target.dataset.cell;
-      var isValidMove = handleValidityCheck(e);
+gameboardContainer.onmouseover = (e) => {
+  var isValidMove = handleValidityCheck(e);
+  if (isValidMove) {
+    e.target.classList.add('mouseover');
+  }
+};
 
-      if (isValidMove) {
-        handleMove(e, cellNum);
-      }
+gameboardContainer.onmouseout = (e) => {
+  e.target.classList.remove('mouseover');
+};
 
-      if (store.gameboard.checkForWin() && !store.gameOver) {
-        handleWin();
-      } else if (store.gameboard.checkForTie()) {
-        handleTieGame();
-      } else if (isValidMove) {
-        store.currentPlayer.switchCurrentPlayer();
-        displayNextTurn();
-      }
-    };
+gameboardContainer.onclick = (e) => {
+  var cellNum = e.target.dataset.cell;
+  var isValidMove = handleValidityCheck(e);
+
+  if (isValidMove) {
+    handleMove(e, cellNum);
+  }
+
+  if (store.gameboard.checkForWin() && !store.gameOver) {
+    handleWin();
+  } else if (store.gameboard.checkForTie()) {
+    handleTieGame();
+  } else if (isValidMove) {
+    store.currentPlayer.switchCurrentPlayer();
+    displayNextTurn();
   }
 };
 
@@ -103,7 +111,7 @@ function trackCurrentPlayer(player) {
 function initializeGameboard() {
   return {
     board: new Array(9),
-    
+
     resetBoard: function () {
       for (var i = 0; i < this.board.length; i++) {
         this.board[i] = null;
@@ -159,7 +167,6 @@ function initializeGameboard() {
       }
       return false;
     },
-
   };
 }
 
@@ -208,7 +215,7 @@ function displayWinner(winner) {
 
 function updateWins(playerNum, playerWins) {
   var playerScore = document.querySelector(`.p${playerNum}-score`);
-  
+
   if (playerWins === 1) {
     playerScore.innerText = `${playerWins} win`;
   } else {
@@ -272,7 +279,7 @@ function handleGameReset() {
         ? store.players[1]
         : store.players[0];
     store.startingPlayer = store.currentPlayer.player;
-    displayNextTurn()
+    displayNextTurn();
     resetDOM();
   }, 3000);
 }
