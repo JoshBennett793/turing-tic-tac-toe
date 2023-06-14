@@ -3,6 +3,11 @@
 # Tic-Tac-Toe
 **Created by [Josh Bennett](https://www.linkedin.com/in/joshua-bennett793)**
   
+[![LinkedIn Badge](https://img.shields.io/badge/-@JoshBennett793-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/joshua-bennett793/)
+![Email Badge](https://img.shields.io/badge/-joshbennett793@yahoo.com-red?style=flat&logo=yahoo&logoColor=white)
+  
+### [LIVE DEMO](https://joshbennett793.github.io/turing-tic-tac-toe/)
+  
 </div>
 
 ## 📝 Description
