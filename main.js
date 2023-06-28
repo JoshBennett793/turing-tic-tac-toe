@@ -102,7 +102,7 @@ function initializeGameboard() {
     board: new Array(9),
 
     resetBoard() {
-      for (var i = 0; i < this.board.length; i++) {
+      for (let i = 0; i < this.board.length; i++) {
         this.board[i] = null;
       }
     },
@@ -148,7 +148,7 @@ function initializeGameboard() {
 }
 
 function handleValidityCheck(e) {
-  var cellNum = e.target.dataset.cell;
+  const cellNum = e.target.dataset.cell;
   // returns true if data model gameboard cell that matches UI gameboard
   // cell is null and gameOver is set to false
   return store.gameboard.checkIfValidMove(cellNum) && !store.gameOver;
@@ -169,10 +169,8 @@ function init() {
 // DOM MANIPULATION
 
 function renderToken(cellNum) {
-  for (var i = 0; i < store.gameboard.board.length; i++) {
-    gameboardCells[cellNum].innerText =
-      store.currentPlayer.player.getPlayerToken();
-  }
+  gameboardCells[cellNum].innerText =
+    store.currentPlayer.player.getPlayerToken();
 }
 
 function displayWinner(winner) {
@@ -180,18 +178,20 @@ function displayWinner(winner) {
 }
 
 function updateWins(playerNum, playerWins) {
-  var playerScore = document.querySelector(`.p${playerNum}-score`);
+  const playerScore = document.querySelector(`.p${playerNum}-score`);
 
-  if (playerWins === 1) {
-    playerScore.innerText = `${playerWins} win`;
-  } else {
-    playerScore.innerText = `${playerWins} wins`;
+  switch (playerWins) {
+    case 1:
+      playerScore.innerText = `${playerWins} win`;
+      break;
+    default:
+      playerScore.innerText = `${playerWins} wins`;
   }
 }
 
 function handleWin() {
-  var currentPlayerToken = store.currentPlayer.player.getPlayerToken();
-  var currentPlayerNum = store.currentPlayer.player.getPlayerNum();
+  const currentPlayerToken = store.currentPlayer.player.getPlayerToken();
+  const currentPlayerNum = store.currentPlayer.player.getPlayerNum();
 
   store.gameOver = true;
   displayWinner(currentPlayerToken);
@@ -218,11 +218,11 @@ function handleMove(e, cellNum) {
 }
 
 function displayWinningCombo() {
-  for (var i = 0; i < gameboardCells.length; i++) {
-    if (store.winningCombo.includes(parseInt(gameboardCells[i].dataset.cell))) {
-      gameboardCells[i].classList.add('winner');
+  gameboardCells.forEach(cell => {
+    if (store.winningCombo.includes(parseInt(cell.dataset.cell))) {
+      cell.classList.add('winner');
     }
-  }
+  });
 }
 
 function displayNextTurn() {
@@ -230,10 +230,10 @@ function displayNextTurn() {
 }
 
 function resetDOM() {
-  for (var i = 0; i < gameboardCells.length; i++) {
-    gameboardCells[i].innerText = '';
-    gameboardCells[i].classList.remove('winner');
-  }
+  gameboardCells.forEach(cell => {
+    cell.innerText = '';
+    cell.classList.remove('winner');
+  });
 }
 
 function handleGameReset() {
