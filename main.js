@@ -1,12 +1,12 @@
 // QUERY SELECTORS
 
-var gameboardContainer = document.querySelector('.gameboard-grid');
-var gameboardCells = document.querySelectorAll('.cell');
-var gameboardHeader = document.querySelector('.gameboard-header h1');
+const gameboardContainer = document.querySelector('.gameboard-grid');
+const gameboardCells = document.querySelectorAll('.cell');
+const gameboardHeader = document.querySelector('.gameboard-header h1');
 
 // GLOBAL VARIABLES
 
-var store = {
+const store = {
   playerOne: Object,
   playerTwo: Object,
   players: [],
@@ -21,20 +21,20 @@ var store = {
 
 window.onload = init;
 
-gameboardContainer.onmouseover = (e) => {
-  var isValidMove = handleValidityCheck(e);
+gameboardContainer.onmouseover = e => {
+  const isValidMove = handleValidityCheck(e);
   if (isValidMove) {
     e.target.classList.add('mouseover');
   }
 };
 
-gameboardContainer.onmouseout = (e) => {
+gameboardContainer.onmouseout = e => {
   e.target.classList.remove('mouseover');
 };
 
-gameboardContainer.onclick = (e) => {
-  var cellNum = e.target.dataset.cell;
-  var isValidMove = handleValidityCheck(e);
+gameboardContainer.onclick = e => {
+  const cellNum = e.target.dataset.cell;
+  const isValidMove = handleValidityCheck(e);
 
   if (isValidMove) {
     handleMove(e, cellNum);
@@ -64,19 +64,19 @@ function createPlayer(num, token) {
       wins: 0,
     },
 
-    getPlayerNum: function () {
+    getPlayerNum() {
       return this.player.num;
     },
 
-    getPlayerToken: function () {
+    getPlayerToken() {
       return this.player.token;
     },
 
-    getPlayerWins: function () {
+    getPlayerWins() {
       return this.player.wins;
     },
 
-    increaseWins: function () {
+    increaseWins() {
       this.player.wins += 1;
     },
   };
@@ -88,7 +88,7 @@ function trackCurrentPlayer(player) {
   return {
     player,
 
-    switchCurrentPlayer: function () {
+    switchCurrentPlayer() {
       this.player =
         this.player === store.players[0] ? store.players[1] : store.players[0];
     },
@@ -101,28 +101,28 @@ function initializeGameboard() {
   return {
     board: new Array(9),
 
-    resetBoard: function () {
+    resetBoard() {
       for (var i = 0; i < this.board.length; i++) {
         this.board[i] = null;
       }
     },
 
-    checkIfValidMove: function (move) {
+    checkIfValidMove(move) {
       return !this.board[move];
     },
 
-    updateBoard: function (move) {
+    updateBoard(move) {
       if (!this.board[move]) {
         this.board[move] = store.currentPlayer.player.getPlayerToken();
       }
     },
 
-    checkForTie: function () {
+    checkForTie() {
       return !this.board.includes(null);
     },
 
-    checkForWin: function () {
-      var winConditions = [
+    checkForWin() {
+      const winConditions = [
         [0, 1, 2],
         [3, 4, 5],
         [6, 7, 8],
@@ -133,41 +133,18 @@ function initializeGameboard() {
         [2, 4, 6],
       ];
 
-      var gameboardState = [];
-      var currentPlayerToken = store.currentPlayer.player.getPlayerToken();
+      const currentPlayerToken = store.currentPlayer.player.getPlayerToken();
+      const isWin = winConditions.find(condition =>
+        condition.every(index => this.board[index] === currentPlayerToken),
+      );
 
-      // create gameboardState array of index positions occupied by currentPlayer's tokens
-      for (var i = 0; i < this.board.length; i++) {
-        if (this.board[i] === currentPlayerToken) {
-          gameboardState.push(i);
-        }
+      if (isWin) {
+        store.winningCombo = isWin;
       }
 
-      // evaluate each winCondition against the current gameboard state, return boolean
-      // if winning condition is found and assign winning condition to winningCombo
-      for (var i = 0; i < winConditions.length; i++) {
-        var isWin = evaluateWinCondition(gameboardState, winConditions[i]);
-        if (isWin) {
-          winningCombo = winConditions[i];
-          return true;
-        } else {
-          continue;
-        }
-      }
-      return false;
+      return isWin;
     },
   };
-}
-
-function evaluateWinCondition(state, condition) {
-  var winningCombo = [];
-  for (var i = 0; i < state.length; i++) {
-    if (condition.includes(state[i])) {
-      winningCombo.push(state[i]);
-    }
-  }
-  // return true if all 3 win condition elements were found in player's gameboardState
-  return winningCombo.length === 3;
 }
 
 function handleValidityCheck(e) {
@@ -242,7 +219,7 @@ function handleMove(e, cellNum) {
 
 function displayWinningCombo() {
   for (var i = 0; i < gameboardCells.length; i++) {
-    if (winningCombo.includes(parseInt(gameboardCells[i].dataset.cell))) {
+    if (store.winningCombo.includes(parseInt(gameboardCells[i].dataset.cell))) {
       gameboardCells[i].classList.add('winner');
     }
   }
